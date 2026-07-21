@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>诸天纪元 · 游戏主页</title>
+    <title>诸天纪元 · 从零开始的玄幻冒险</title>
 
     <style>
         /* ===== 全局重置 ===== */
@@ -745,7 +745,7 @@
         }
 
         /* ==========================================================
-           ★ 游戏简介模态框 ★（新增）
+           ★ 游戏简介模态框（新增，手机适配优化） ★
            ========================================================== */
         .game-modal-inner {
             max-width: 1200px;
@@ -775,6 +775,7 @@
             height: auto;
         }
 
+        /* 游戏按钮容器 — 电脑默认 */
         .game-button-grid {
             position: absolute;
             bottom: 11.0%;
@@ -809,6 +810,7 @@
             transform: scale(0.95);
         }
 
+        /* ===== 平板/手机横屏 (≤768px) ===== */
         @media (max-width: 768px) {
             .game-button-grid {
                 gap: 6px 10px;
@@ -818,8 +820,26 @@
             }
         }
 
+        /* ===== 手机竖屏 (≤480px) — 优化按钮大小和位置 ===== */
+        @media (max-width: 480px) {
+            .game-button-grid {
+                gap: 4px 8px;
+                bottom: 4%;
+                right: 5%;
+                width: 52%;
+            }
+            /* 手机端去除悬停缩放，改为点击反馈 */
+            .game-action-btn:hover {
+                transform: none;
+                filter: none;
+            }
+            .game-action-btn:active {
+                transform: scale(0.95);
+            }
+        }
+
         /* ==========================================================
-           响应式
+           响应式（主界面及通用）
            ========================================================== */
         @media (max-width: 768px) {
             .title { letter-spacing: 0.12em; }
@@ -839,12 +859,6 @@
             #bgToggleBtn { width: 32px; height: 32px; font-size: 0.9rem; bottom: 1.2rem; left: 1.2rem; }
             .cg-controls { gap: 0.5rem; }
             .cg-time { min-width: 60px; font-size: 0.7rem; }
-            .game-button-grid {
-                gap: 6px 10px;
-                bottom: 6%;
-                right: 6%;
-                width: 38%;
-            }
         }
 
         @media (max-width: 480px) {
@@ -877,12 +891,6 @@
             .cg-controls input[type="range"]::-webkit-slider-thumb { width: 12px; height: 12px; }
             .world-title { font-size: 1.2rem; }
             .world-hint { font-size: 0.6rem; }
-            .game-button-grid {
-                gap: 4px 6px;
-                bottom: 4%;
-                right: 4%;
-                width: 45%;
-            }
         }
 
         /* ===== 视频降级 ===== */
@@ -1530,7 +1538,6 @@
             function openGameModalFn() {
                 gameModal.classList.add('active');
                 gameContainer.classList.remove('show');
-                // 强制回流后触发渐显
                 void gameContainer.offsetWidth;
                 setTimeout(function() {
                     gameContainer.classList.add('show');
@@ -1553,7 +1560,7 @@
                 if (e.target === gameModal) closeGameModalFn();
             });
 
-            // 游戏按钮点击处理（保持原有alert，可自定义跳转）
+            // 游戏按钮点击处理（可自定义跳转）
             window.handleGameClick = function(buttonName) {
                 alert(`你点击了【${buttonName}】按钮！可以在这个函数里添加页面跳转逻辑。`);
                 // 示例跳转代码：
@@ -1592,7 +1599,7 @@
                 }
             });
 
-            console.log('✦ 诸天纪元 · 全部功能（含游戏简介）加载完成 ✦');
+            console.log('✦ 诸天纪元 · 全部功能（含游戏简介手机适配优化）加载完成 ✦');
             console.log('★ 作者：老九门 ★');
 
         })();
