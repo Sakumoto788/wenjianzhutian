@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>诸天纪元 · 宣传页</title>
+    <title>诸天纪元 · 游戏主页</title>
 
     <style>
         /* ===== 全局重置 ===== */
@@ -166,13 +166,13 @@
         /* ===== ★ 按钮组：纵向排列 ★ ===== */
         .btn-group {
             display: flex;
-            flex-direction: column;    /* 改为纵向 */
+            flex-direction: column;
             align-items: center;
             gap: clamp(0.8rem, 1.2vw, 1.5rem);
             margin-top: clamp(1.2rem, 2.5vh, 2.5rem);
             pointer-events: auto;
             width: 100%;
-            max-width: 320px;          /* 限制最大宽度，避免过长 */
+            max-width: 320px;
         }
 
         .btn-common {
@@ -745,6 +745,80 @@
         }
 
         /* ==========================================================
+           ★ 游戏简介模态框 ★（新增）
+           ========================================================== */
+        .game-modal-inner {
+            max-width: 1200px;
+            padding: 1rem;
+            background: rgba(10, 8, 6, 0.92);
+        }
+
+        .game-container {
+            width: 100%;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: scale(0.96);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .game-container.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .game-container img.bg-img {
+            width: 100%;
+            display: block;
+            height: auto;
+        }
+
+        .game-button-grid {
+            position: absolute;
+            bottom: 11.0%;
+            right: 6.6%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 18px;
+            z-index: 10;
+            width: 22%;
+        }
+
+        .game-action-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        .game-action-btn img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .game-action-btn:hover {
+            transform: scale(1.06);
+            filter: drop-shadow(0 0 8px rgba(197, 165, 92, 0.8));
+        }
+
+        .game-action-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .game-button-grid {
+                gap: 6px 10px;
+                bottom: 6%;
+                right: 6%;
+                width: 38%;
+            }
+        }
+
+        /* ==========================================================
            响应式
            ========================================================== */
         @media (max-width: 768px) {
@@ -765,6 +839,12 @@
             #bgToggleBtn { width: 32px; height: 32px; font-size: 0.9rem; bottom: 1.2rem; left: 1.2rem; }
             .cg-controls { gap: 0.5rem; }
             .cg-time { min-width: 60px; font-size: 0.7rem; }
+            .game-button-grid {
+                gap: 6px 10px;
+                bottom: 6%;
+                right: 6%;
+                width: 38%;
+            }
         }
 
         @media (max-width: 480px) {
@@ -797,6 +877,12 @@
             .cg-controls input[type="range"]::-webkit-slider-thumb { width: 12px; height: 12px; }
             .world-title { font-size: 1.2rem; }
             .world-hint { font-size: 0.6rem; }
+            .game-button-grid {
+                gap: 4px 6px;
+                bottom: 4%;
+                right: 4%;
+                width: 45%;
+            }
         }
 
         /* ===== 视频降级 ===== */
@@ -839,11 +925,13 @@
         <div class="divider-bottom"></div>
         <p class="subtitle">—— 一部横跨诸天的群像史诗 ——</p>
 
-        <!-- ★ 按钮组：纵向排列（竖着放） ★ -->
+        <!-- ★ 按钮组：纵向排列 ★ -->
         <div class="btn-group">
             <button class="btn-common" id="openCharModal">✦ 人物志 ✦</button>
             <button class="btn-common" id="openCgModal">✦ 剧情CG欣赏 ✦</button>
             <button class="btn-common" id="openWorldModal">✦ 世界观 ✦</button>
+            <!-- ★ 新增游戏简介按钮 ★ -->
+            <button class="btn-common" id="openGameModal">✦ 游戏简介 ✦</button>
         </div>
     </div>
 
@@ -921,6 +1009,34 @@
                 <img id="worldImage" src="https://raw.githubusercontent.com/Sakumoto788/wenjianzhutian/63659f983a61444ad53125378c74a97d7af2a981/01_%E8%AF%B8%E5%A4%A9%E7%BA%AA%E5%85%83_%E4%B8%96%E7%95%8C%E8%A7%82%E7%AE%80%E4%BB%8B_%E6%96%87%E5%AD%97%E7%89%88.png" alt="世界观简介" />
             </div>
             <div class="world-hint">✦ 点击图片关闭 ✦</div>
+        </div>
+    </div>
+
+    <!-- ==========================================================
+    ★ 游戏简介模态框（新增） ★
+    ========================================================== -->
+    <div class="modal-overlay" id="gameModal">
+        <div class="modal-inner game-modal-inner">
+            <span class="modal-close" id="closeGameModal">✕</span>
+            <div class="game-container" id="gameContainer">
+                <!-- 背景图 -->
+                <img class="bg-img" src="https://raw.githubusercontent.com/Sakumoto788/wenjianzhutian/71980d3700b13a806969909bfb95d675236157b9/gameguide1.jpg" alt="诸天纪元游戏介绍">
+                <!-- 四个图片按钮 -->
+                <div class="game-button-grid">
+                    <button class="game-action-btn" onclick="handleGameClick('调查与推理')">
+                        <img src="https://raw.githubusercontent.com/Sakumoto788/wenjianzhutian/53669afec6c094b6cb2720840f01249d7addd8e0/%E8%B0%83%E6%9F%A5%E4%B8%8E%E6%8E%A8%E7%90%86.png" alt="调查与推理">
+                    </button>
+                    <button class="game-action-btn" onclick="handleGameClick('生存与成长')">
+                        <img src="https://raw.githubusercontent.com/Sakumoto788/wenjianzhutian/53669afec6c094b6cb2720840f01249d7addd8e0/02_%E8%AF%B8%E5%A4%A9%E7%BA%AA%E5%85%83_%E6%B8%B8%E6%88%8F%E7%AE%80%E4%BB%8B_%E6%96%87%E5%AD%97%E7%89%88.png" alt="生存与成长">
+                    </button>
+                    <button class="game-action-btn" onclick="handleGameClick('团队战斗')">
+                        <img src="https://raw.githubusercontent.com/Sakumoto788/wenjianzhutian/53669afec6c094b6cb2720840f01249d7addd8e0/%E5%9B%A2%E9%98%9F%E6%88%98%E6%96%97.png" alt="团队战斗">
+                    </button>
+                    <button class="game-action-btn" onclick="handleGameClick('动态因果')">
+                        <img src="https://raw.githubusercontent.com/Sakumoto788/wenjianzhutian/53669afec6c094b6cb2720840f01249d7addd8e0/active.png" alt="动态因果">
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1356,15 +1472,12 @@
 
             function openWorldModalFn() {
                 worldModal.classList.add('active');
-                // 如果图片还没加载完成，先隐藏，加载完成后渐显
                 worldImageWrapper.classList.remove('show');
-                // 如果图片已缓存，直接显示
                 if (worldImage.complete && worldImage.naturalWidth > 0) {
                     setTimeout(function() {
                         worldImageWrapper.classList.add('show');
                     }, 50);
                 } else {
-                    // 等待图片加载完成
                     worldImage.onload = function() {
                         setTimeout(function() {
                             worldImageWrapper.classList.add('show');
@@ -1372,13 +1485,11 @@
                     };
                     worldImage.onerror = function() {
                         console.log('世界观图片加载失败，请检查链接');
-                        // 即使加载失败也尝试显示（占位）
                         setTimeout(function() {
                             worldImageWrapper.classList.add('show');
                         }, 50);
                     };
                 }
-                // 如果图片已经加载过但失败，重试
                 if (worldImageLoaded && worldImage.naturalWidth === 0) {
                     worldImage.src = worldImage.src;
                 }
@@ -1386,7 +1497,6 @@
 
             function closeWorldModalFn() {
                 worldModal.classList.remove('active');
-                // 关闭时移除渐显类，下次打开重新触发动画
                 worldImageWrapper.classList.remove('show');
             }
 
@@ -1401,17 +1511,54 @@
                 if (e.target === worldModal) closeWorldModalFn();
             });
 
-            // 点击图片也可关闭
             worldImageWrapper.addEventListener('click', function(e) {
                 if (e.target === worldImageWrapper || e.target === worldImage) {
                     closeWorldModalFn();
                 }
             });
 
-            // 记录图片加载状态
             worldImage.addEventListener('load', function() {
                 worldImageLoaded = true;
             });
+
+            // ---------- ★ 游戏简介控制 ★ ----------
+            const gameModal = document.getElementById('gameModal');
+            const openGameBtn = document.getElementById('openGameModal');
+            const closeGameBtn = document.getElementById('closeGameModal');
+            const gameContainer = document.getElementById('gameContainer');
+
+            function openGameModalFn() {
+                gameModal.classList.add('active');
+                gameContainer.classList.remove('show');
+                // 强制回流后触发渐显
+                void gameContainer.offsetWidth;
+                setTimeout(function() {
+                    gameContainer.classList.add('show');
+                }, 50);
+            }
+
+            function closeGameModalFn() {
+                gameModal.classList.remove('active');
+                gameContainer.classList.remove('show');
+            }
+
+            openGameBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openGameModalFn();
+            });
+
+            closeGameBtn.addEventListener('click', closeGameModalFn);
+
+            gameModal.addEventListener('click', function(e) {
+                if (e.target === gameModal) closeGameModalFn();
+            });
+
+            // 游戏按钮点击处理（保持原有alert，可自定义跳转）
+            window.handleGameClick = function(buttonName) {
+                alert(`你点击了【${buttonName}】按钮！可以在这个函数里添加页面跳转逻辑。`);
+                // 示例跳转代码：
+                // if(buttonName === '调查与推理') { window.location.href = '/investigate'; }
+            };
 
             // ---------- ESC 键关闭 ----------
             document.addEventListener('keydown', function(e) {
@@ -1426,6 +1573,8 @@
                         closeCgModalFn();
                     } else if (worldModal.classList.contains('active')) {
                         closeWorldModalFn();
+                    } else if (gameModal.classList.contains('active')) {
+                        closeGameModalFn();
                     }
                 }
             });
@@ -1443,7 +1592,7 @@
                 }
             });
 
-            console.log('✦ 诸天纪元 · 人物志 + 剧情CG + 世界观（按钮纵向）加载完成 ✦');
+            console.log('✦ 诸天纪元 · 全部功能（含游戏简介）加载完成 ✦');
             console.log('★ 作者：老九门 ★');
 
         })();
