@@ -346,6 +346,7 @@
             padding: 2rem 1rem;
             border-radius: 20px;
             background: rgba(10, 8, 6, 0.85);
+            /* 背景图已移除 */
             background-size: cover;
             background-position: center;
             background-blend-mode: overlay;
@@ -378,7 +379,7 @@
            ★ 人物志模态框 ★
            ========================================================== */
         .char-modal-inner {
-            background-image: url('你的背景图链接'); /* ★★★ 替换为你的背景图链接 ★★★ */
+            /* 背景图已移除 */
         }
 
         .char-list-view {
@@ -607,8 +608,8 @@
            ★ 剧情CG欣赏模态框 ★
            ========================================================== */
         .cg-modal-inner {
-            background-image: url('你的背景图链接'); /* ★★★ 替换为你的背景图链接 ★★★ */
             max-width: 1000px;
+            /* 背景图已移除 */
         }
 
         .cg-title {
@@ -929,8 +930,8 @@
             <div class="cg-title">✦ 祖碑大战 ✦</div>
             <div class="cg-video-wrapper" id="cgVideoWrapper">
                 <video id="cgVideo" preload="metadata">
-                    <!-- ★★★ 替换为你的CG视频链接 ★★★ -->
-                    <source src="你的CG视频链接.mp4" type="video/mp4" />
+                    <!-- ★★★ CG视频链接已替换 ★★★ -->
+                    <source src="http://tih8qixrg.hn-bkt.clouddn.com/%E7%A5%96%E7%A2%91%E5%A4%A7%E6%88%98.mp4" type="video/mp4" />
                     您的浏览器不支持视频播放。
                 </video>
                 <div class="cg-play-btn" id="cgPlayBtn">▶</div>
@@ -1007,7 +1008,6 @@
             }, { passive: false });
 
             // ---------- ★ 核心功能：CG视频与背景视频联动 ★ ----------
-            // CG播放 → 背景暂停；CG暂停/结束 → 背景恢复
             function pauseBgVideo() {
                 if (bgVideo && !bgVideo.paused) {
                     bgVideo.pause();
@@ -1024,28 +1024,21 @@
                 }
             }
 
-            // 监听CG视频的播放事件
             cgVideo.addEventListener('play', function() {
                 pauseBgVideo();
             });
 
-            // 监听CG视频的暂停事件
             cgVideo.addEventListener('pause', function() {
-                // 如果CG视频没有结束（ended事件会单独处理），且不是人为暂停后立即恢复
-                // 但为了更准确，在pause时如果视频没有结束，恢复背景
                 if (!cgVideo.ended) {
                     resumeBgVideo();
                 }
             });
 
-            // 监听CG视频播放结束
             cgVideo.addEventListener('ended', function() {
                 resumeBgVideo();
-                // 更新播放按钮状态
                 updateCgPlayBtn();
             });
 
-            // 监听CG视频加载失败（不影响背景）
             cgVideo.addEventListener('error', function() {
                 console.log('CG视频加载失败，请检查链接');
             });
@@ -1248,50 +1241,38 @@
                     });
                 } else {
                     cgVideo.pause();
-                    // pause事件会自动恢复背景视频
                 }
                 updateCgPlayBtn();
             }
 
-            // 点击视频切换播放/暂停
             cgVideoWrapper.addEventListener('click', function(e) {
                 if (e.target.closest('.modal-close')) return;
                 toggleCgPlay();
             });
 
-            // 视频播放/暂停事件同步按钮状态
             cgVideo.addEventListener('play', function() {
                 updateCgPlayBtn();
-                // play事件中已通过监听器暂停背景视频
             });
             cgVideo.addEventListener('pause', function() {
                 updateCgPlayBtn();
-                // pause事件中已通过监听器恢复背景视频（未结束时）
             });
             cgVideo.addEventListener('ended', function() {
                 updateCgPlayBtn();
-                // ended事件中已通过监听器恢复背景视频
             });
 
-            // 打开CG模态框
             function openCgModalFn() {
                 cgModal.classList.add('active');
-                // 如果视频已结束，重置到开头
                 if (cgVideo.ended) {
                     cgVideo.currentTime = 0;
                     updateCgPlayBtn();
                 }
-                // 不自动播放，等待用户点击
             }
 
             function closeCgModalFn() {
                 cgModal.classList.remove('active');
-                // 关闭时如果CG正在播放，暂停并恢复背景
                 if (cgVideo && !cgVideo.paused) {
                     cgVideo.pause();
-                    // pause事件会自动恢复背景
                 }
-                // 如果CG已暂停但背景未恢复（例如刚打开未播放），确保背景恢复
                 if (bgVideo && bgVideo.paused) {
                     bgVideo.play().catch(function() {});
                 }
@@ -1338,7 +1319,6 @@
 
             console.log('✦ 诸天纪元 · 人物志 + 剧情CG欣赏（联动暂停）加载完成 ✦');
             console.log('★ 作者：老九门 ★');
-            console.log('★ CG播放时背景自动暂停，CG暂停/结束时背景自动恢复 ★');
 
         })();
     </script>
