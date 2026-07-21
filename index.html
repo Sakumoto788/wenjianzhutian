@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>诸天纪元 · 宣传页</title>
+    <title>诸天纪元 · 史诗玄幻巨著</title>
 
     <style>
         /* ===== 全局重置 ===== */
@@ -183,9 +183,18 @@
             text-align: center;
         }
 
-        /* ===== 角色介绍入口按钮 ===== */
-        .btn-characters {
+        /* ===== 按钮组 ===== */
+        .btn-group {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: clamp(0.8rem, 1.5vw, 1.5rem);
             margin-top: clamp(1.2rem, 2.5vh, 2.5rem);
+            pointer-events: auto;
+        }
+
+        .btn-common {
             font-family: '华文行楷', 'STXingkai', 'KaiTi', cursive;
             font-weight: 400;
             font-size: clamp(0.9rem, 1.4vw, 1.3rem);
@@ -196,13 +205,13 @@
             background: rgba(255, 215, 120, 0.05);
             color: rgba(255, 215, 120, 0.7);
             cursor: pointer;
-            pointer-events: auto;
             transition: all 0.4s ease;
             backdrop-filter: blur(4px);
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+            pointer-events: auto;
         }
 
-        .btn-characters:hover {
+        .btn-common:hover {
             background: rgba(255, 215, 120, 0.15);
             border-color: rgba(255, 215, 120, 0.6);
             color: #ffd700;
@@ -296,9 +305,9 @@
         }
 
         /* ==========================================================
-           ★ 角色介绍模态框 ★
+           ★ 通用模态框基座 ★
            ========================================================== */
-        .char-modal {
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -314,7 +323,7 @@
             pointer-events: auto;
         }
 
-        .char-modal.active {
+        .modal-overlay.active {
             display: flex;
         }
 
@@ -329,7 +338,7 @@
             }
         }
 
-        .char-modal-inner {
+        .modal-inner {
             position: relative;
             width: 92%;
             max-width: 1400px;
@@ -337,7 +346,6 @@
             padding: 2rem 1rem;
             border-radius: 20px;
             background: rgba(10, 8, 6, 0.85);
-            background-image: url('你的背景图链接'); /* ★★★ 替换为你的背景图链接 ★★★ */
             background-size: cover;
             background-position: center;
             background-blend-mode: overlay;
@@ -347,7 +355,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
         }
 
         .modal-close {
@@ -367,7 +374,13 @@
             transform: rotate(90deg);
         }
 
-        /* ----- 列表视图 ----- */
+        /* ==========================================================
+           ★ 人物志模态框 ★
+           ========================================================== */
+        .char-modal-inner {
+            background-image: url('你的背景图链接'); /* ★★★ 替换为你的背景图链接 ★★★ */
+        }
+
         .char-list-view {
             width: 100%;
             display: flex;
@@ -376,7 +389,6 @@
             position: relative;
         }
 
-        /* ★★★ 标题已改为“人物志” ★★★ */
         .modal-title {
             font-family: '华文行楷', 'STXingkai', 'KaiTi', cursive;
             font-weight: 400;
@@ -387,7 +399,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* ★★★ 横向滚动容器 + 箭头导航 ★★★ */
         .gallery-wrapper {
             position: relative;
             width: 100%;
@@ -417,7 +428,6 @@
             cursor: grabbing;
         }
 
-        /* 滚动条样式 - 更醒目 */
         .char-gallery::-webkit-scrollbar {
             height: 14px;
             background: transparent;
@@ -444,7 +454,6 @@
             background: transparent;
         }
 
-        /* ★★★ 左右导航箭头 ★★★ */
         .scroll-arrow {
             position: absolute;
             top: 50%;
@@ -477,12 +486,10 @@
         .scroll-arrow-left {
             left: -6px;
         }
-
         .scroll-arrow-right {
             right: -6px;
         }
 
-        /* ----- 角色卡片 ----- */
         .char-item {
             flex: 0 0 auto;
             width: clamp(90px, 14vw, 200px);
@@ -522,7 +529,6 @@
             text-overflow: ellipsis;
         }
 
-        /* ----- 详情视图（极简大图） ----- */
         .char-detail-view {
             display: none;
             flex-direction: column;
@@ -597,7 +603,91 @@
             display: block;
         }
 
-        /* ===== 响应式 ===== */
+        /* ==========================================================
+           ★ 剧情CG欣赏模态框 ★
+           ========================================================== */
+        .cg-modal-inner {
+            background-image: url('你的背景图链接'); /* ★★★ 替换为你的背景图链接 ★★★ */
+            max-width: 1000px;
+        }
+
+        .cg-title {
+            font-family: '华文行楷', 'STXingkai', 'KaiTi', cursive;
+            font-weight: 400;
+            font-size: clamp(1.6rem, 2.8vw, 2.8rem);
+            letter-spacing: 0.4em;
+            color: rgba(255, 215, 120, 0.8);
+            text-shadow: 0 0 30px rgba(255, 215, 120, 0.15);
+            margin-bottom: 1rem;
+        }
+
+        .cg-video-wrapper {
+            width: 100%;
+            max-width: 900px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 215, 120, 0.15);
+            background: #000;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cg-video-wrapper video {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            background: #000;
+        }
+
+        /* 播放/暂停按钮 — 覆盖在视频上的大按钮，更易点击 */
+        .cg-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(60px, 10vw, 100px);
+            height: clamp(60px, 10vw, 100px);
+            border-radius: 50%;
+            background: rgba(255, 215, 120, 0.15);
+            backdrop-filter: blur(4px);
+            border: 2px solid rgba(255, 215, 120, 0.3);
+            color: rgba(255, 215, 120, 0.8);
+            font-size: clamp(2rem, 4vw, 4rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            pointer-events: none; /* 由视频容器点击触发 */
+            opacity: 0.8;
+        }
+
+        .cg-video-wrapper:hover .cg-play-btn {
+            opacity: 1;
+            background: rgba(255, 215, 120, 0.25);
+            border-color: rgba(255, 215, 120, 0.6);
+        }
+
+        .cg-video-wrapper .cg-play-btn.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        /* 底部控制提示 */
+        .cg-hint {
+            font-family: '华文行楷', 'STXingkai', 'KaiTi', cursive;
+            font-size: clamp(0.7rem, 1vw, 0.9rem);
+            color: rgba(255, 215, 120, 0.25);
+            letter-spacing: 0.2em;
+            margin-top: 0.8rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ==========================================================
+           响应式
+           ========================================================== */
         @media (max-width: 768px) {
             .title {
                 letter-spacing: 0.12em;
@@ -643,6 +733,13 @@
             }
             .char-gallery::-webkit-scrollbar {
                 height: 10px;
+            }
+            .btn-group {
+                gap: 0.6rem;
+            }
+            .btn-common {
+                font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+                padding: 0.4em 1.6em;
             }
         }
 
@@ -692,10 +789,6 @@
             .modal-title {
                 font-size: 1.2rem;
             }
-            .btn-characters {
-                font-size: 0.7rem;
-                padding: 0.4em 1.4em;
-            }
             .detail-back {
                 font-size: 1.4rem;
                 top: 4px;
@@ -719,6 +812,28 @@
             .char-gallery {
                 gap: 0.8rem;
                 padding: 0.3rem 0.3rem 1.5rem 0.3rem;
+            }
+            .btn-group {
+                gap: 0.5rem;
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn-common {
+                font-size: 0.7rem;
+                padding: 0.4em 1.4em;
+                width: 80%;
+                text-align: center;
+            }
+            .cg-title {
+                font-size: 1.2rem;
+            }
+            .cg-play-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.6rem;
+            }
+            .cg-hint {
+                font-size: 0.6rem;
             }
         }
 
@@ -765,8 +880,11 @@
         <div class="divider-bottom"></div>
         <p class="subtitle">—— 一部横跨诸天的群像史诗 ——</p>
 
-        <!-- ★ 角色介绍按钮 ★ -->
-        <button class="btn-characters" id="openCharModal">✦ 诸天纪元 · 人物志✦</button>
+        <!-- ★ 按钮组：角色介绍 + 剧情CG欣赏 ★ -->
+        <div class="btn-group">
+            <button class="btn-common" id="openCharModal">✦ 人物志 ✦</button>
+            <button class="btn-common" id="openCgModal">✦ 剧情CG欣赏 ✦</button>
+        </div>
     </div>
 
     <!-- ==========================================================
@@ -782,29 +900,19 @@
     <div class="footer">✦ 万 界 之 上 · 纪 元 之 始 ✦</div>
 
     <!-- ==========================================================
-    ★ 角色介绍模态框 ★
+    ★ 人物志模态框 ★
     ========================================================== -->
-    <div class="char-modal" id="charModal">
-        <div class="char-modal-inner" style="background-image: url('你的背景图链接');">
-            <!-- 关闭按钮 -->
+    <div class="modal-overlay" id="charModal">
+        <div class="modal-inner char-modal-inner">
             <span class="modal-close" id="closeCharModal">✕</span>
-
-            <!-- 列表视图 -->
             <div class="char-list-view" id="charListView">
                 <div class="modal-title">✦ 人物志 ✦</div>
                 <div class="gallery-wrapper">
-                    <!-- 左箭头 -->
                     <div class="scroll-arrow scroll-arrow-left" id="scrollLeft">‹</div>
-                    <!-- 滚动容器 -->
-                    <div class="char-gallery" id="charGallery">
-                        <!-- 角色卡片将由JS动态生成 -->
-                    </div>
-                    <!-- 右箭头 -->
+                    <div class="char-gallery" id="charGallery"></div>
                     <div class="scroll-arrow scroll-arrow-right" id="scrollRight">›</div>
                 </div>
             </div>
-
-            <!-- 详情视图（极简：只显示16:9大图 + 返回按钮） -->
             <div class="char-detail-view" id="charDetailView">
                 <div class="detail-back" id="detailBack">‹</div>
                 <div class="detail-image-wrapper" id="detailImageWrapper">
@@ -815,13 +923,32 @@
     </div>
 
     <!-- ==========================================================
+    ★ 剧情CG欣赏模态框 ★
+    ========================================================== -->
+    <div class="modal-overlay" id="cgModal">
+        <div class="modal-inner cg-modal-inner">
+            <span class="modal-close" id="closeCgModal">✕</span>
+            <div class="cg-title">✦ 祖碑大战 ✦</div>
+            <div class="cg-video-wrapper" id="cgVideoWrapper">
+                <video id="cgVideo" preload="metadata">
+                    <!-- ★★★ 替换为你的CG视频链接 ★★★ -->
+                    <source src="你的CG视频链接.mp4" type="video/mp4" />
+                    您的浏览器不支持视频播放。
+                </video>
+                <div class="cg-play-btn" id="cgPlayBtn">▶</div>
+            </div>
+            <div class="cg-hint">✦ 点击视频播放 · 再次点击暂停 ✦</div>
+        </div>
+    </div>
+
+    <!-- ==========================================================
     JavaScript 控制
     ========================================================== -->
     <script>
         (function() {
             'use strict';
 
-            // ---------- 视频控制 ----------
+            // ---------- 视频背景控制 ----------
             const video = document.getElementById('bgVideo');
             const body = document.body;
 
@@ -927,7 +1054,6 @@
                 detailImage: 'https://raw.githubusercontent.com/Sakumoto788/zhutian/c6184508797203de8299159da9df0565f6ca8d71/16-nameless-guide.webp'
             }];
 
-            // ---------- 角色头像（9:16小图） ----------
             const avatarLinks = [
                 'https://raw.githubusercontent.com/Sakumoto788/zhutian/25ea0062a57cea2a92511331e26aa3485393a4e2/xeeg.png',
                 'https://raw.githubusercontent.com/Sakumoto788/zhutian/25ea0062a57cea2a92511331e26aa3485393a4e2/shidi.png',
@@ -946,7 +1072,7 @@
                 'https://raw.githubusercontent.com/Sakumoto788/zhutian/25ea0062a57cea2a92511331e26aa3485393a4e2/wuming.png'
             ];
 
-            // ---------- 渲染角色列表 ----------
+            // ---------- 渲染人物志 ----------
             const gallery = document.getElementById('charGallery');
             gallery.innerHTML = '';
             characters.forEach((char, index) => {
@@ -959,41 +1085,35 @@
                     <div class="char-name">${char.name}</div>
                 `;
                 item.addEventListener('click', function() {
-                    openDetail(index);
+                    openCharDetail(index);
                 });
                 gallery.appendChild(item);
             });
 
-            // ---------- ★ 箭头导航 ★ ----------
+            // ---------- 人物志导航箭头 ----------
             const scrollLeftBtn = document.getElementById('scrollLeft');
             const scrollRightBtn = document.getElementById('scrollRight');
 
             function scrollGallery(direction) {
-                const scrollAmount = gallery.clientWidth * 0.7; // 滚动70%视口宽度
+                const scrollAmount = gallery.clientWidth * 0.7;
                 const targetScroll = gallery.scrollLeft + direction * scrollAmount;
-                gallery.scrollTo({
-                    left: targetScroll,
-                    behavior: 'smooth'
-                });
+                gallery.scrollTo({ left: targetScroll, behavior: 'smooth' });
             }
 
             scrollLeftBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 scrollGallery(-1);
             });
-
             scrollRightBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 scrollGallery(1);
             });
 
-            // 根据滚动位置显示/隐藏箭头
             function updateArrows() {
                 const scrollLeft = gallery.scrollLeft;
                 const maxScroll = gallery.scrollWidth - gallery.clientWidth;
                 scrollLeftBtn.style.opacity = scrollLeft > 10 ? '1' : '0.2';
                 scrollRightBtn.style.opacity = scrollLeft < maxScroll - 10 ? '1' : '0.2';
-                // 完全不可滚动时隐藏箭头
                 if (maxScroll <= 0) {
                     scrollLeftBtn.style.display = 'none';
                     scrollRightBtn.style.display = 'none';
@@ -1002,88 +1122,163 @@
                     scrollRightBtn.style.display = 'flex';
                 }
             }
-
             gallery.addEventListener('scroll', updateArrows);
-
-            // 窗口尺寸变化时重新计算
             let resizeTimer;
             window.addEventListener('resize', function() {
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(updateArrows, 100);
             });
 
-            // ---------- 模态框控制 ----------
-            const modal = document.getElementById('charModal');
-            const openBtn = document.getElementById('openCharModal');
-            const closeBtn = document.getElementById('closeCharModal');
-
-            const listView = document.getElementById('charListView');
-            const detailView = document.getElementById('charDetailView');
+            // ---------- 人物志模态框控制 ----------
+            const charModal = document.getElementById('charModal');
+            const openCharBtn = document.getElementById('openCharModal');
+            const closeCharBtn = document.getElementById('closeCharModal');
+            const charListView = document.getElementById('charListView');
+            const charDetailView = document.getElementById('charDetailView');
             const detailImage = document.getElementById('detailImage');
             const detailBack = document.getElementById('detailBack');
             const detailImageWrapper = document.getElementById('detailImageWrapper');
 
-            function openModal() {
-                modal.classList.add('active');
-                listView.style.display = 'flex';
-                detailView.classList.remove('active');
-                detailView.style.display = 'none';
-                // 打开后更新箭头状态
+            function openCharModal() {
+                charModal.classList.add('active');
+                charListView.style.display = 'flex';
+                charDetailView.classList.remove('active');
+                charDetailView.style.display = 'none';
                 setTimeout(updateArrows, 50);
             }
 
-            function closeModal() {
-                modal.classList.remove('active');
+            function closeCharModal() {
+                charModal.classList.remove('active');
+                // 如果视频在播放，暂停
+                if (cgVideo && !cgVideo.paused) {
+                    cgVideo.pause();
+                    updateCgPlayBtn();
+                }
             }
 
-            function openDetail(index) {
+            function openCharDetail(index) {
                 const char = characters[index];
                 if (!char) return;
                 detailImage.src = char.detailImage || '#';
-                listView.style.display = 'none';
-                detailView.style.display = 'flex';
-                detailView.classList.remove('active');
-                void detailView.offsetWidth;
-                detailView.classList.add('active');
+                charListView.style.display = 'none';
+                charDetailView.style.display = 'flex';
+                charDetailView.classList.remove('active');
+                void charDetailView.offsetWidth;
+                charDetailView.classList.add('active');
             }
 
             function goBackToList() {
-                detailView.classList.remove('active');
-                detailView.style.display = 'none';
-                listView.style.display = 'flex';
+                charDetailView.classList.remove('active');
+                charDetailView.style.display = 'none';
+                charListView.style.display = 'flex';
                 setTimeout(updateArrows, 50);
             }
 
             detailBack.addEventListener('click', goBackToList);
             detailImageWrapper.addEventListener('click', goBackToList);
-
-            openBtn.addEventListener('click', function(e) {
+            openCharBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                openModal();
+                openCharModal();
+            });
+            closeCharBtn.addEventListener('click', closeCharModal);
+            charModal.addEventListener('click', function(e) {
+                if (e.target === charModal) closeCharModal();
             });
 
-            closeBtn.addEventListener('click', closeModal);
+            // ---------- ★ 剧情CG视频控制 ★ ----------
+            const cgModal = document.getElementById('cgModal');
+            const openCgBtn = document.getElementById('openCgModal');
+            const closeCgBtn = document.getElementById('closeCgModal');
+            const cgVideo = document.getElementById('cgVideo');
+            const cgPlayBtn = document.getElementById('cgPlayBtn');
+            const cgVideoWrapper = document.getElementById('cgVideoWrapper');
 
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeModal();
+            function updateCgPlayBtn() {
+                if (cgVideo.paused) {
+                    cgPlayBtn.textContent = '▶';
+                    cgPlayBtn.classList.remove('hidden');
+                } else {
+                    cgPlayBtn.textContent = '❚❚';
+                    cgPlayBtn.classList.add('hidden');
                 }
+            }
+
+            function toggleCgPlay() {
+                if (cgVideo.paused) {
+                    cgVideo.play().catch(function(e) {
+                        console.log('视频播放被阻止:', e);
+                    });
+                } else {
+                    cgVideo.pause();
+                }
+                updateCgPlayBtn();
+            }
+
+            // 点击视频切换播放/暂停
+            cgVideoWrapper.addEventListener('click', function(e) {
+                // 防止点击关闭按钮触发
+                if (e.target.closest('.modal-close')) return;
+                toggleCgPlay();
             });
 
+            // 视频播放/暂停事件同步按钮状态
+            cgVideo.addEventListener('play', updateCgPlayBtn);
+            cgVideo.addEventListener('pause', updateCgPlayBtn);
+            cgVideo.addEventListener('ended', function() {
+                // 播放结束后重置按钮
+                cgPlayBtn.textContent = '▶';
+                cgPlayBtn.classList.remove('hidden');
+            });
+
+            // 打开CG模态框
+            function openCgModal() {
+                cgModal.classList.add('active');
+                // 如果视频已结束，重置到开头
+                if (cgVideo.ended) {
+                    cgVideo.currentTime = 0;
+                    updateCgPlayBtn();
+                }
+                // 不自动播放，等待用户点击
+            }
+
+            function closeCgModal() {
+                cgModal.classList.remove('active');
+                if (cgVideo && !cgVideo.paused) {
+                    cgVideo.pause();
+                    updateCgPlayBtn();
+                }
+            }
+
+            openCgBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openCgModal();
+            });
+
+            closeCgBtn.addEventListener('click', closeCgModal);
+
+            cgModal.addEventListener('click', function(e) {
+                if (e.target === cgModal) closeCgModal();
+            });
+
+            // ESC 键关闭
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    if (detailView.classList.contains('active')) {
-                        goBackToList();
-                    } else {
-                        closeModal();
+                if (e.key === 'Escape') {
+                    if (charModal.classList.contains('active')) {
+                        if (charDetailView.classList.contains('active')) {
+                            goBackToList();
+                        } else {
+                            closeCharModal();
+                        }
+                    } else if (cgModal.classList.contains('active')) {
+                        closeCgModal();
                     }
                 }
             });
 
-            // 键盘左右键翻页（当列表可见时）
+            // 键盘左右键翻页（人物志列表可见时）
             document.addEventListener('keydown', function(e) {
-                if (!modal.classList.contains('active')) return;
-                if (detailView.classList.contains('active')) return;
+                if (!charModal.classList.contains('active')) return;
+                if (charDetailView.classList.contains('active')) return;
                 if (e.key === 'ArrowLeft') {
                     e.preventDefault();
                     scrollGallery(-1);
@@ -1093,8 +1288,9 @@
                 }
             });
 
-            console.log('✦ 诸天纪元 · 人物志（优化版）加载完成 ✦');
+            console.log('✦ 诸天纪元 · 人物志 + 剧情CG欣赏 加载完成 ✦');
             console.log('★ 作者：老九门 ★');
+            console.log('★ 请替换CG视频链接：在 <video> 标签的 src 中 ★');
 
         })();
     </script>
